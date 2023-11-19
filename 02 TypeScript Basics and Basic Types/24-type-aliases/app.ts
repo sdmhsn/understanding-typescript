@@ -1,4 +1,4 @@
-// type aliases
+// 1. Type aliases
 type Combinable = number | string; // after type keyword, we add name of our custom/aliases type. the name is up to us. we can invent any name here which is not built into JavaScript or TypeScript as a key name
 type ConversionDescriptor = 'as-number' | 'as-text'; // type alias for literal type combined with union type
 
@@ -29,6 +29,28 @@ console.log(combinedStringAges);
 
 const combinedNames = combine('Saddam', 'Rahmat', 'as-text');
 console.log(combinedNames);
+
+// 2. Type aliases & object types
+// sample 1 (get from quiz):
+type Product = { title: string; price: number };
+const p1: Product = { title: 'A Book', price: 12.99, isListed: true }; // typescript error. isListed is not part of the "Product" type.
+console.log(p1);
+
+// sample 2:
+type User = { name: string; age: number };
+
+function greet(user: User) {
+  console.log('Hi, I am ' + user.name);
+}
+
+function isOlder(user: User, checkAge: number) {
+  return checkAge > user.age;
+}
+
+const person = { name: 'saddam', age: 30 };
+greet(person);
+const personAgeCheck = isOlder(person, 29);
+console.log(personAgeCheck);
 
 /*
   Notes:
