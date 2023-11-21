@@ -1,6 +1,6 @@
-"use strict";
-var age;
+'use strict';
+let age;
 age = 30;
 console.log(age);
-var userName = 'Saddam';
+let userName = 'Saddam';
 console.log(userName);
