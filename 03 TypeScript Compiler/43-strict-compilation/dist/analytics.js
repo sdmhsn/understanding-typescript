@@ -1,4 +1,6 @@
 "use strict";
-console.log('Data analytics!');
-const userName = 'Saddam';
-// userName = 4; // typescript error
+function setAnalytics(data) {
+    // function setAnalytics(data) { // typescript error
+    console.log(data);
+}
+setAnalytics('The data');

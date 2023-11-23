@@ -89,8 +89,16 @@
 
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
-    // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
-    // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
+
+    /*
+        There is this strict true option (above), and actually what this does
+        is it enables all strict type checking options, so effectively setting this as the same
+        as if you had set all these options separately. So you can either set all these options 
+        one by one, or just set this option (below).
+    */
+
+    // "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+    // "strictNullChecks": false /* When type checking, take into account 'null' and 'undefined'. */,
     // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
     // "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
     // "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */

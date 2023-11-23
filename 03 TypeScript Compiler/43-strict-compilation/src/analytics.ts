@@ -1,4 +1,6 @@
-console.log('Data analytics!');
+function setAnalytics(data: string) {
+  // function setAnalytics(data) { // typescript error
+  console.log(data);
+}
 
-const userName = 'Saddam';
-// userName = 4; // typescript error
+setAnalytics('The data');
