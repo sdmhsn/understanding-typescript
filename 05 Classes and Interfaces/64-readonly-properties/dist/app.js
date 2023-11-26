@@ -14,6 +14,7 @@ class Department {
         console.log(`Department (${this.id}):  ${this.name}`);
     }
     addEmployee(employee) {
+        this.id = 'd2'; // typescript error. we can't modify the id value, even inside the class. (e.g. constructor(private readonly id: string...))
         this.employees.push(employee);
     }
     printEmployeeInformation() {
@@ -25,4 +26,12 @@ const accounting = new Department('d1', 'Accounting'); // instantiate id, name t
 accounting.describe();
 accounting.addEmployee('Saddam');
 accounting.addEmployee('Rahmat');
+console.log(accounting);
 accounting.printEmployeeInformation();
+/*
+  Note:
+  - Let's say we have certain fields, which should not just be private or public, they also shouldn't change after their initialization.
+    For example, the id should not change thereafter. To make it clear that it shouldn't change, you can add readonly to the constructor
+    parameter as well. e.g. constructor(private readonly id: string, public name: string)
+  - The readonly keyword, just like private and public, is introduced by TypeScript, it does not exist in JavaScript.
+*/
