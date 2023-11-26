@@ -27,5 +27,7 @@ accounting.describe();
 accounting.addEmployee('Saddam');
 accounting.addEmployee('Rahmat');
 
+accounting.employees[1] = 'Fuad';
+
 console.log(accounting);
 accounting.printEmployeeInformation();
