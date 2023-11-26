@@ -1,9 +1,14 @@
 "use strict";
 class Department {
-    constructor(id, n) {
-        this.employees = [];
+    constructor(id, name) {
         this.id = id;
-        this.name = n;
+        this.name = name;
+        // private id: string;
+        // public name: string;
+        this.employees = [];
+        // we don't have to initialize value of field in constructor
+        // this.id = id;
+        // this.name = n;
     }
     describe() {
         console.log(`Department (${this.id}):  ${this.name}`);

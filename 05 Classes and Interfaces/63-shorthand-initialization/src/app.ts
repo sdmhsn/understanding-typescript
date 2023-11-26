@@ -1,11 +1,12 @@
 class Department {
-  private id: string;
-  public name: string;
+  // private id: string;
+  // public name: string;
   private employees: string[] = [];
 
-  constructor(id: string, n: string) {
-    this.id = id;
-    this.name = n;
+  constructor(private id: string, public name: string) {
+    // we don't have to initialize value of field in constructor
+    // this.id = id;
+    // this.name = n;
   }
 
   describe(this: Department) {
