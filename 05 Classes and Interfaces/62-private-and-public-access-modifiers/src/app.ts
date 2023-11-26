@@ -1,6 +1,6 @@
 class Department {
   name: string;
-  employees: string[] = []; // store data employee
+  private employees: string[] = []; // store data employee. private means employees is now a property which is only accessible from inside the class
 
   constructor(n: string) {
     this.name = n;
@@ -27,7 +27,8 @@ accounting.describe();
 accounting.addEmployee('Saddam');
 accounting.addEmployee('Rahmat');
 
-accounting.employees[1] = 'Fuad';
+console.log(accounting.employees); // we can't access the private property (employess) anymore
+accounting.employees[1] = 'Fuad'; // we can't modify the private property (employess) anymore
 
 console.log(accounting);
 accounting.printEmployeeInformation();
