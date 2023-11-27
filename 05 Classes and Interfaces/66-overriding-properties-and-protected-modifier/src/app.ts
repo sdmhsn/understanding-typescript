@@ -1,5 +1,5 @@
 class Department {
-  private employees: string[] = [];
+  private employees: string[] = []; // private properties are really only accessible from inside the class in which they're defined, not classes that inherit from that class. it's not a property that can be changed from outside
 
   constructor(private readonly id: string, public name: string) {
     // we don't have to initialize value of field in constructor
@@ -34,6 +34,14 @@ class AccountingDepartment extends Department {
     super(id, 'Accounting');
   }
 
+  addEmployee(name: string) {
+    if (name === 'Saddam') {
+      return;
+    }
+
+    this.employees.push(name); // So, accounting department doesn't have direct access to the employees properties (because the employees property on Department setted to private)
+  }
+
   addReports(text: string) {
     this.reports.push(text);
   }
@@ -58,7 +66,5 @@ console.log(accounting);
 
 /*
   Note:
-  - We can only inherit from one class (e.g. class ITDepartment extends Department), so we can't inherit from multiple classes
-  - super() calls the constructor of the base class, so department constructor in this case
-  - if we are using something that uses the "this" keyword in constructor, we have to do that after calling super
+  - private property can't be changed from outside the class in which they're defined
 */
