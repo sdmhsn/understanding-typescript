@@ -62,7 +62,8 @@ console.log(it);
 const accounting = new AccountingDepartment('dd2', []);
 accounting.addReports('Something went wrong...');
 accounting.printReports();
-accounting.employees.push('Fitri'); // property 'employees' is protected and only accessible within class 'Department' and its subclasses.
+accounting.addEmployee('Fitri');
+accounting.printEmployeeInformation();
 console.log(accounting);
 
 /*
