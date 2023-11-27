@@ -26,6 +26,18 @@ class ITDepartment extends Department {
         this.admins = admins; // un-shorthand initialization. when we want using the shorthand initialization, we should add private/public keyword before admins: string[] in ITDepartment constructor
     }
 }
+class AccountingDepartment extends Department {
+    constructor(id, reports) {
+        super(id, 'Accounting');
+        this.reports = reports;
+    }
+    addReports(text) {
+        this.reports.push(text);
+    }
+    printReports() {
+        console.log(this.reports);
+    }
+}
 const it = new ITDepartment('dd1', ['Saddam']); // instantiate id and admins to ITDepartment (constructor(id: string, admins: string[]))
 it.name = 'NEW NAME'; // change the ITDepartment property name, through the base class (Department) property name
 it.describe(); // we can also use the base class (Department) method through the ITDepartment class
@@ -33,6 +45,10 @@ it.addEmployee('Rahmat');
 it.addEmployee('Fuad');
 it.printEmployeeInformation();
 console.log(it);
+const accounting = new AccountingDepartment('dd2', []);
+accounting.addReports('Something went wrong...');
+accounting.printReports();
+console.log(accounting);
 /*
   Note:
   - We can only inherit from one class (e.g. class ITDepartment extends Department), so we can't inherit from multiple classes
