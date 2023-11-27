@@ -1,5 +1,5 @@
 class Department {
-  private employees: string[] = []; // private properties are really only accessible from inside the class in which they're defined, not classes that inherit from that class. it's not a property that can be changed from outside
+  protected employees: string[] = []; // it's now not just available in this class, but also in any class that extends this class.
 
   constructor(private readonly id: string, public name: string) {
     // we don't have to initialize value of field in constructor
@@ -39,7 +39,7 @@ class AccountingDepartment extends Department {
       return;
     }
 
-    this.employees.push(name); // So, accounting department doesn't have direct access to the employees properties (because the employees property on Department setted to private)
+    this.employees.push(name); // So, now we can access employees from inside our accounting department (because the employees property on Department setted to protected)
   }
 
   addReports(text: string) {
@@ -62,9 +62,12 @@ console.log(it);
 const accounting = new AccountingDepartment('dd2', []);
 accounting.addReports('Something went wrong...');
 accounting.printReports();
+accounting.employees.push('Fitri'); // property 'employees' is protected and only accessible within class 'Department' and its subclasses.
 console.log(accounting);
 
 /*
   Note:
   - private property can't be changed from outside the class in which they're defined
+  - we can switch it to protected. protected is like private, but unlike private, it's now not just available in 
+    this class, but also in any class that extends this class.
 */
