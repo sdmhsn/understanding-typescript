@@ -1,8 +1,14 @@
 class Department {
+  static fiscalYear = 2023; // static property
   protected employees: string[] = []; // it's now not just available in this class, but also in any class that extends this class.
 
   constructor(private readonly id: string, public name: string) {
     // we don't have to initialize value of field in constructor
+  }
+
+  // static method
+  static createEmployee(name: string) {
+    return { name: name };
   }
 
   describe(this: Department) {
@@ -81,7 +87,13 @@ accounting.mostRecentReport = 'Year end report'; // setter
 console.log(accounting.mostRecentReport); // getter
 console.log(accounting);
 
+// using static method and property
+const employee1 = Department.createEmployee('Saddam');
+console.log(employee1, Department.fiscalYear); // static method and property output
+
 /*
   Note:
-  - 
+  - Static properties and methods allow we to add properties and methods to classes which are not accessed
+    on an instance of the class, so where you don't need to call new class name first 
+    (e.g. const accounting = new AccountingDepartment('dd2', []);), but which we access directly on the class.
 */

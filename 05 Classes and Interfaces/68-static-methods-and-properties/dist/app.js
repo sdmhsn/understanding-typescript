@@ -6,6 +6,10 @@ class Department {
         this.employees = []; // it's now not just available in this class, but also in any class that extends this class.
         // we don't have to initialize value of field in constructor
     }
+    // static method
+    static createEmployee(name) {
+        return { name: name };
+    }
     describe() {
         console.log(`Department (${this.id}):  ${this.name}`);
     }
@@ -18,6 +22,7 @@ class Department {
         console.log(this.employees);
     }
 }
+Department.fiscalYear = 2023; // static property
 class ITDepartment extends Department {
     constructor(id, admins) {
         super(id, 'IT'); // super() calls the constructor of the base class (Department). id from constructor ITDepartment passed to this super(). 'IT' is hard code a value for the name of Department class
@@ -66,7 +71,12 @@ accounting.mostRecentReport = 'Year end report'; // setter
 // without any setter access -> error: No report found!
 console.log(accounting.mostRecentReport); // getter
 console.log(accounting);
+// using static method and property
+const employee1 = Department.createEmployee('Saddam');
+console.log(employee1, Department.fiscalYear); // static method and property output
 /*
   Note:
-  -
+  - Static properties and methods allow we to add properties and methods to classes which are not accessed
+    on an instance of the class, so where you don't need to call new class name first
+    (e.g. const accounting = new AccountingDepartment('dd2', []);), but which we access directly on the class.
 */
