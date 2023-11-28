@@ -30,8 +30,28 @@ class ITDepartment extends Department {
 }
 
 class AccountingDepartment extends Department {
+  private lastReport: string;
+  // private lastReport: string = ''; // when we don't want to use / initialize lastReport (this.lastReport = reports[0];) inside constructor
+
+  // getter
+  get mostRecentReport() {
+    if (this.lastReport) {
+      return this.lastReport;
+    }
+    throw new Error('No report found!');
+  }
+
+  // setter
+  set mostRecentReport(value: string) {
+    if (!value) {
+      throw new Error('Please pass in a valid value');
+    }
+    this.addReports(value);
+  }
+
   constructor(id: string, private reports: string[]) {
     super(id, 'Accounting');
+    this.lastReport = reports[0];
   }
 
   addEmployee(name: string) {
@@ -44,6 +64,7 @@ class AccountingDepartment extends Department {
 
   addReports(text: string) {
     this.reports.push(text);
+    this.lastReport = text;
   }
 
   printReports() {
@@ -51,24 +72,19 @@ class AccountingDepartment extends Department {
   }
 }
 
-const it = new ITDepartment('dd1', ['Saddam']); // instantiate id and admins to ITDepartment (constructor(id: string, admins: string[]))
-it.name = 'NEW NAME'; // change the ITDepartment property name, through the base class (Department) property name
-it.describe(); // we can also use the base class (Department) method through the ITDepartment class
-it.addEmployee('Rahmat');
-it.addEmployee('Fuad');
-it.printEmployeeInformation();
-console.log(it);
-
 const accounting = new AccountingDepartment('dd2', []);
 accounting.addReports('Something went wrong...');
-accounting.printReports();
-accounting.addEmployee('Fitri');
-accounting.printEmployeeInformation();
+
+accounting.mostRecentReport = 'Year end report'; // setter
+// accounting.mostRecentReport = ''; // setter error: Please pass in a valid value
+// without any setter access -> error: No report found!
+console.log(accounting.mostRecentReport); // getter
 console.log(accounting);
 
 /*
   Note:
-  - private property can't be changed from outside the class in which they're defined
-  - we can switch it to protected. protected is like private, but unlike private, it's now not just available in 
-    this class, but also in any class that extends this class.
+  - A getter is basically a property, where we execute a function or method, when we retrieve a value
+    and that allows we as a developer to add more complex logic
+  - A setter can use to set a value
+  - both getter and setter are simply access like a property (e.g. console.log(accounting.mostRecentReport); and accounting.mostRecentReport = 'New Data';)
 */
