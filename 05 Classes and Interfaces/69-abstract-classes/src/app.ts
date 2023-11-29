@@ -2,7 +2,7 @@ class Department {
   static fiscalYear = 2023; // static property
   protected employees: string[] = []; // it's now not just available in this class, but also in any class that extends this class.
 
-  constructor(private readonly id: string, public name: string) {
+  constructor(protected readonly id: string, public name: string) {
     // we don't have to initialize value of field in constructor
   }
 
@@ -60,6 +60,11 @@ class AccountingDepartment extends Department {
     this.lastReport = reports[0];
   }
 
+  // override the base class (Department) describe method
+  describe() {
+    console.log(`Accounting - Department ID: ${this.id}`); // id extends from id protected readonly property in base class (Department). we only can read the readonly property, but we can't modify the value of its property
+  }
+
   addEmployee(name: string) {
     if (name === 'Saddam') {
       return;
@@ -79,21 +84,9 @@ class AccountingDepartment extends Department {
 }
 
 const accounting = new AccountingDepartment('dd2', []);
-accounting.addReports('Something went wrong...');
-
-accounting.mostRecentReport = 'Year end report'; // setter
-// accounting.mostRecentReport = ''; // setter error: Please pass in a valid value
-// without any setter access -> error: No report found!
-console.log(accounting.mostRecentReport); // getter
-console.log(accounting);
-
-// using static method and property
-const employee1 = Department.createEmployee('Saddam');
-console.log(employee1, Department.fiscalYear); // static method and property output
+accounting.describe(); // access the override methods
 
 /*
   Note:
-  - Static properties and methods allow we to add properties and methods to classes which are not accessed
-    on an instance of the class, so where you don't need to call new class name first 
-    (e.g. const accounting = new AccountingDepartment('dd2', []);), but which we access directly on the class.
+  
 */
