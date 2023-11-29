@@ -14,7 +14,8 @@ class Department {
   }
 
   addEmployee(employee: string) {
-    this.id = 'd2'; // typescript error. we can't modify the id value, even inside the class. (e.g. constructor(private readonly id: string...))
+    // this.id = 'd2'; // typescript error. we can't modify the id value, even inside or outside its class. (e.g. constructor(private readonly id: string...))
+    // console.log(this.id); // we can only read the readonly properties from inside or outside class
     this.employees.push(employee);
   }
 
