@@ -31,7 +31,6 @@ class ITDepartment extends Department {
     }
 }
 class AccountingDepartment extends Department {
-    // private lastReport: string = ''; // when we don't want to use / initialize lastReport (this.lastReport = reports[0];) inside constructor
     // getter
     get mostRecentReport() {
         if (this.lastReport) {
@@ -51,6 +50,13 @@ class AccountingDepartment extends Department {
         this.reports = reports;
         this.lastReport = reports[0];
     }
+    static getInstance() {
+        if (AccountingDepartment.instance) {
+            return this.instance;
+        }
+        this.instance = new AccountingDepartment('dd2', []); // access the private constructor
+        return this.instance;
+    }
     // override the base class (Department) describe method
     describe() {
         console.log(`Accounting - Department ID: ${this.id}`); // id extends from id protected readonly property in base class (Department). we only can read the readonly property, but we can't modify the value of its property
@@ -69,26 +75,22 @@ class AccountingDepartment extends Department {
         console.log(this.reports);
     }
 }
-// we can't instantiate Department now because the Department class marked as abstract:
-// const department = new Department('d1', 'Department'); // typescript error: Cannot create an instance of an abstract class.
-// department.describe();
-const accounting = new AccountingDepartment('dd2', []);
-accounting.describe(); // access the override methods
-const it = new ITDepartment('dd1', ['Saddam']);
-it.describe();
+// Here wegetting an error because the constructor is private:
+// const accounting = new AccountingDepartment('dd2', []);
+// accounting.describe(); // access the override methods
+// if we wanna work with the AccountingDepartment,
+const accounting = AccountingDepartment.getInstance();
+const accounting2 = AccountingDepartment.getInstance(); // if we do this again, we will get the same instance as we will see in console log
+console.log(accounting, accounting2); // we will see that the two should be exactly equal (same instance)
 /*
   Note:
-  - Sometimes we don't just want to offer the option of overriding a method because that always exists.
-    we instead want to force the developers working with a certain class or extending a certain class
-    to implement a certain method or to override a certain method.
-  - When would we do that? Well, whenever we wanna ensure that a certain method is available in all classes
-    based on some base class in this case Department.
-  - Abstract can therefore be very useful if we wanna enforce that all classes based on some other class, share some
-    common method or property, we can also have abstract properties. But at the same time, we wanna make sure that
-    we don't have to provide the concrete value, the concrete implementation in the base class, but instead, the
-    inheriting class has to do that.
-  - Now, however, we get an error in the IT Department because it does not implement the inherited abstract member
-    describe, which means, we don't offer the describe method here. And we do have to do that because we're based
-    on the Department class, which is abstract, and which has such abstract method. Which means this method has to be
-    implemented by any class based on this Department class.
+  - The singleton pattern is about ensuring that we always only have exactly one instance of a certain class.
+    This can be useful in scenarios where we somehow can't use static methods or properties or we don't want to,
+    but at the same time we want to make sure that you can't create multiple objects based on a class but that we
+    always have exactly one object based on a class
+  - Let's say for our AccountingDepartment we wanna make sure that we can only create exactly one object based on
+    this class, because we have exactly one accounting department in our entire company.
+  - It's only accessible from inside the class, which sounds strange because how do we get inside of the class if
+    we can't create objects based on it anymore. The answer is, well, static methods. A static method can be called
+    on the class itself so you don't have instantiate it for that.
 */
