@@ -1,5 +1,5 @@
 interface Named {
-  name: string;
+  readonly name: string;
 }
 
 // extends the Named interface
@@ -23,7 +23,7 @@ class Person implements Greetable {
 let user1: Greetable; // we can use our interface as a type.
 
 user1 = new Person('Saddam');
-user1.name = 'Rahmat';
+user1.name = 'Rahmat'; // typescript error. name in Named interface is read-only property
 user1.greet('Hello there - I am');
 console.log(user1);
 
