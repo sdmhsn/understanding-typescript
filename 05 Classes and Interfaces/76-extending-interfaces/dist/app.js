@@ -1,6 +1,7 @@
 "use strict";
 class Person {
     constructor(n) {
+        // name: string; // typescript error. because this class now incorrectly implements the interface Greetable, because the property name is missing.
         this.age = 30; // age value inside
         this.name = n;
     }
@@ -10,7 +11,6 @@ class Person {
 }
 let user1; // we can use our interface as a type.
 user1 = new Person('Saddam');
-user1.name = 'Rahmat'; // typescript error. name in Named interface is read-only property
 user1.greet('Hello there - I am');
 console.log(user1);
 /*
