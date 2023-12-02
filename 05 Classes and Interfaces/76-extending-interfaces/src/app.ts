@@ -8,7 +8,7 @@ interface Greetable extends Named {
 }
 
 class Person implements Greetable {
-  // name: string; // typescript error. because this class now incorrectly implements the interface Greetable, because the property name is missing.
+  name: string;
   age = 30; // age value inside
 
   constructor(n: string) {
@@ -29,4 +29,10 @@ console.log(user1);
 /*
   Note:
   - we can also implement inheritance in interfaces.
+  - and there we can also extend more than one interfaces, simply separated with a comma. remember that for a 
+    classes, this was not possible.
+  - when we use classes in inheritance, we can only inherit from one class. we can't inherit from multiple
+    classes. for interfaces that is different. for interfaces, we can indeed inherit from multiple interfaces, 
+    because in the end they're all just getting merged together, and in this pure TypeScript feature, 
+    which is actually not translated to JavaScript as we will see
 */
