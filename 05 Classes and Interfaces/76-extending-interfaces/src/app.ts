@@ -1,6 +1,9 @@
-interface Greetable {
-  readonly name: string; // only readonly keyword possible in interface
+interface Named {
+  name: string;
+}
 
+// extends the Named interface
+interface Greetable extends Named {
   greet(phrase: string): void;
 }
 
@@ -20,10 +23,11 @@ class Person implements Greetable {
 let user1: Greetable; // we can use our interface as a type.
 
 user1 = new Person('Saddam');
+user1.name = 'Rahmat';
 user1.greet('Hello there - I am');
 console.log(user1);
 
 /*
   Note:
-  - 
+  - we can also implement inheritance in interfaces.
 */
