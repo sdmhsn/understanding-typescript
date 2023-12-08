@@ -11,7 +11,7 @@
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
 
     /* Language and Environment */
-    "target": "ES6" /* NOTE: DEFAULT es2016. Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "target": "ESNext" /* NOTE: DEFAULT es2016. Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
     "lib": [
       // With that here we would unlock all the core JavaScript features we would want to work
       "DOM",
