@@ -1,25 +1,18 @@
 "use strict";
-function countAndDescribe(element) {
-    let descriptionText = 'Got no value.';
-    if (descriptionText.length === 1) {
-        descriptionText = 'Got 1 element.';
-    }
-    else if (descriptionText.length > 1) {
-        descriptionText = `Got ${element.length} elements.`;
-    }
-    return [element, descriptionText];
+function extractAndConvert(obj, key) {
+    /*
+      - The idea of this function here is that we get an object (obj) as a first argument, and the second
+        parameter is, in the end, a key (key).
+      - On the generic types here (<T extends object, U extends keyof T>), we could say we've got a type T,
+        and that will be our object here, and type U has to be a key of our T-type though. So of this object,
+        we wanna guarantee that what we get here as a second parameter as a key is a property of that first type.
+    */
+    return `Value: ${obj[key]}`; // Value: Saddam
 }
-console.log(countAndDescribe('Saddam'));
-console.log(countAndDescribe(['Saddam', 'Rahmat', 'Fuad']));
-console.log(countAndDescribe([]));
-// console.log(countAndDescribe(10)); // typescript error. because a number doesn't have a length property and therefore this does not work.
+console.log(extractAndConvert({ name: 'Saddam' }, 'name')); // 'name' refer to key of name: 'Saddam'. it would pass in an object as a first argument, and then a string as a second.
+// console.log(extractAndConvert({ name: 'Saddam' }, 'age')); // typescript error. "age" is not assignable
 /*
   Notes:
-  - So, here again, we got our generic function. Idea is similar to the function before. We want to be a bit unspecific
-    about the type of data we get here. We don't really care if it's a string, if it's an array, or anything else which a
-    length property. We just care about that it does have a length property and then we want to do something with it
-    because we rely on the length property in our code, so we need to guarantee that we got that, but other than that,
-    we really have no interest in which type of data we're getting here.
-  - We want to be more flexible and with generic types we can be that, we don't care about the exact type. Here, thanks
-    to the constraint, we only care about the fact that it has a length property.
+  - with this keyoff keyword is also to tell TypeScript that we want to ensure that we have this correct structure,
+    and that's of course really useful, because it allows us to ensure that we don't make dumb mistakes
 */
