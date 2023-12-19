@@ -1,22 +1,24 @@
-// decorator
-function Logger(constractor: Function) {
-  console.log('Logging...');
-  console.log(constractor);
-  // console.log(constractor.name); // class name
+// decorator factory
+function Logger(logString: string) {
+  // returned decorator function using anonymous function which takes that constructor argument
+  return function (constractor: Function) {
+    console.log(logString);
+    console.log(constractor);
 
-  /*
+    /*
     output:
-    Logging...
-    class Person {
-      constructor() {
-        this.name = 'Saddam';
-        console.log('Creating person object...');
+      LOGGING - PERSON
+      class Person {
+        constructor() {
+          this.name = 'Saddam';
+          console.log('Creating person object...');
+        }
       }
-    }
-  */
+    */
+  };
 }
 
-@Logger // add decorator to Person class. 'Logger' accepts too few arguments to be used as a decorator here (e.g. function Logger(constractor: Function) )
+@Logger('LOGGING - PERSON') // pass a value for that in "logging - person" and use that inside of our decorator function
 class Person {
   name = 'Saddam';
 
@@ -31,7 +33,7 @@ console.log(Person);
 
 /*
 output:
-  Logging...
+  LOGGING - PERSON
   class Person {
     constructor() {
       this.name = 'Saddam';
@@ -50,21 +52,11 @@ output:
 
 /*
   Notes: 
-  - Now decorators in general are all about classes, but this example is a decorator which we will add to the class as a whole.
-  - A decorator is in the end just a function. A function we apply to something, for example, to a class in a certain way.
-  - The decorator start with a capital character (e.g. Logger). This is not a must do by the way, we don't have to use a capital 
-    starting character, we can use a lowercase one as well, we just see a lot of decorators out there in libraries which we might 
-    use that use uppercase starting characters
-  - We use @ symbonl to add a decorator to the class. The @ symbol here is a special identifier TypeScript sees or recognizes.
-    And then the thing directly after the @ symbol should point at a function. Not execute it, but point at it, which should be our 
-    decorator.
-  - The 'Logger' accepts too few arguments to be used as a decorator. And indeed, decorators receive arguments. How many arguments 
-    depends on where we use the decorator. For the example above, we can name the argument is 'constructor', because in the end we 
-    will get our constructor function of this class, or whichever class we add this decorator to as a argument.
-  - Please also note that our decorator output, Logging, and this class or this constructor function log here is printed first, before 
-    we see Creating person object and our Person object class. Because, indeed, decorators and that's really important, decorators 
-    execute when your class is defined. Not when it is instantiated. We could remove that code for instantiating the class, and we 
-    would still get that decorator output.
-  - So the decorator runs when JavaScript finds our class definition, our constructor function definition. Not when we use that 
-    constructor function to instantiate an object.
+  - We can also define a decorator factory, which basically returns a decorator function, but allows us to configure it when we 
+    assign it as a decorator to something.
+  - We can customize the values the decorator function uses when it executes with our factory function. We now call our decorator here,
+    because we're not executing the decorator function, but we're executing a function that will return such a decorator function. 
+    And the advantage to this is that we can now pass in values (e.g. 'LOGGING - PERSON') which will be used by that inner returned 
+    decorator function.
+  - Using decorator factories can give us more power and more possibilities of configuring what the decorator then does internally.
 */
