@@ -7,27 +7,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 // decorator factory
 function Logger(logString) {
-    // returned decorator function using anonymous function which takes that constructor argument
+    console.log('LOGGER FACTORY'); // A. the decorator factories here run earlier. runs first
+    // decorator function
     return function (constractor) {
-        console.log(logString);
-        console.log(constractor);
+        console.log('Rendering decorator function logger...');
+        console.log(logString); // 2. LOGGING
+        console.log(constractor); // 3 class Person {...}
     };
 }
 // decorator factory
 function WithTemplate(template, hookId) {
+    console.log('TEMPLATE FACTORY'); // B. the decorator factories here run earlier. runs second
     // decorator function
     return function (constractor) {
-        // We convert this to any (constractor: any), so the typescript allows this and doesn't think it's a normal function.
-        // console.log(constractor);
-        const hookEl = document.getElementById(hookId); // no typescript error. no need to add exclamation mark (!), because hookEl constant used inside the if statement
-        const p = new constractor(); // we can create a new person here, by calling our constructor, because that is our constructor: Function here, after all.
-        // if HookEl is a thing that exists
+        console.log('Rendering decorator function template...');
+        const hookEl = document.getElementById(hookId);
+        const p = new constractor(); // 1. Creating person object... (refer to Person constructor())
         if (hookEl) {
-            hookEl.innerHTML = template; //
-            hookEl.querySelector('h1').textContent = p.name; // the querySelector() should add the exclamation mark (!) to assuming that we always find an h1 element. p.name = 'Saddam'
+            hookEl.innerHTML = template;
+            hookEl.querySelector('h1').textContent = p.name;
         }
     };
 }
+// WithTemplate runs first, then Logger executes
 let Person = class Person {
     constructor() {
         this.name = 'Saddam';
@@ -35,11 +37,41 @@ let Person = class Person {
     }
 };
 Person = __decorate([
-    WithTemplate('<h1>My Person Object</h1>', 'app') // 'app': ID assigned to the div in index.html
+    Logger('LOGGING'),
+    WithTemplate('<h1>My Person Object</h1>', 'app')
 ], Person);
-const pers = new Person();
-console.log(pers); // Person { "name": "Saddam" }
+const pers = new Person(); // 4. Creating person object... (refer to Person constructor())
+console.log(pers); // 5. Person { "name": "Saddam" }
+/*
+  output:
+
+  LOGGER FACTORY
+  TEMPLATE FACTORY
+  Rendering decorator function template...
+  Creating person object...
+  Rendering decorator function logger...
+  LOGGING
+  class Person {
+    constructor() {
+        this.name = 'Saddam';
+        console.log('Creating person object...');
+    }
+  }
+  Creating person object...
+  Person {name: 'Saddam'}
+*/
 /*
   Notes:
-  -
+  - We can add more than one decorator to a class, or anywhere else where you can use a decorator.
+  - They execute bottom up. The bottom-most decorator first, then thereafter, the decorators above it.
+    Such as example on above, WithTemplate runs first, then Logger executes.
+  - And important, about the actual decorator functions, the decorator factories run earlier. You will see
+    that there, actually the LOGGER FACTORY runs first, and then we got the TEMPLATE FACTORY. And that makes sense
+    because in the end, even though we got this @ symbol here, here we're executing a function, And of course,
+    regular JavaScript rules apply here and this function execution (@Logger('LOGGING')) happens before this
+    function (@WithTemplate('<h1>My Person Object</h1>', 'app')) execution. Which is why we see the Logger Factory
+    before we see Template Factory.
+  - So the creation of our actual decorator functions happens in the order in which we specify these factory functions.
+    But the execution of the actual decorator functions then happens bottom up. Which means the bottom-most decorator
+    executes first, so this decorator function, and thereafter the decorator above that executes.
 */
