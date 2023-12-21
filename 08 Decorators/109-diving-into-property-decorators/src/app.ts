@@ -41,6 +41,38 @@ class Person {
 const pers = new Person(); // 4. Creating person object... (refer to Person constructor())
 console.log(pers); // 5. Person { "name": "Saddam" }
 
+/* Property Decorator */
+function Log(target: any, propertyName: string | Symbol) {
+  // target: any -> we use any because we don't know exactly which structure does object will have.
+  // propertyName: string | Symbol -> that could be a string or could of course also be a Symbol we don't know what we use as a property identifier
+  console.log('Property decorator!');
+  console.log(target); // {constructor: ƒ, getPriceWithTax: ƒ}. We see here that's the prototype of our object because we're not seeing title and price here. But we do see getPriceWithTax() and indeed methods are registered on the prototype of an object.
+  console.log(propertyName); // title. property name we're working with.
+}
+
+class Product {
+  @Log // add Log decorator to property
+  title: string;
+  private _price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this._price = p;
+  }
+
+  set price(val: number) {
+    if (val > 0) {
+      this._price = val;
+    } else {
+      throw new Error('Invalid price - should be positive!');
+    }
+  }
+
+  getPriceWithTax(tax: number) {
+    return this.price * (1 + tax);
+  }
+}
+
 /*
   output:
 
@@ -58,9 +90,16 @@ console.log(pers); // 5. Person { "name": "Saddam" }
   }
   Creating person object...
   Person {name: 'Saddam'}
+  Property decorator!
+  {constructor: ƒ, getPriceWithTax: ƒ}
+  title
 */
 
 /*
   Notes: 
-  - 
+  - We can add a decorator to a property. If we add a decorator to a property, the decorator receives two arguments. 
+  - The first argument, is the target of the property and for an instance property, which we call on a instance if we 
+    work with it. If we had a static property, target would refer to the constructor function state.
+  - The second argument we get, is the property name simply. 
+  - About Symbol: https://www.udemy.com/course/understanding-typescript/learn/lecture/16935722#questions/18123174
 */

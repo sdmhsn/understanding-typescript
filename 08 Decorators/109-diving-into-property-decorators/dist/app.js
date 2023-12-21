@@ -42,6 +42,34 @@ Person = __decorate([
 ], Person);
 const pers = new Person(); // 4. Creating person object... (refer to Person constructor())
 console.log(pers); // 5. Person { "name": "Saddam" }
+/* Property Decorator */
+function Log(target, propertyName) {
+    // target: any -> we use any because we don't know exactly which structure does object will have.
+    // propertyName: string | Symbol -> that could be a string or could of course also be a Symbol we don't know what we use as a property identifier
+    console.log('Property decorator!');
+    console.log(target); // {constructor: ƒ, getPriceWithTax: ƒ}. We see here that's the prototype of our object because we're not seeing title and price here. But we do see getPriceWithTax() and indeed methods are registered on the prototype of an object.
+    console.log(propertyName); // title. property name we're working with.
+}
+class Product {
+    constructor(t, p) {
+        this.title = t;
+        this._price = p;
+    }
+    set price(val) {
+        if (val > 0) {
+            this._price = val;
+        }
+        else {
+            throw new Error('Invalid price - should be positive!');
+        }
+    }
+    getPriceWithTax(tax) {
+        return this.price * (1 + tax);
+    }
+}
+__decorate([
+    Log // add Log decorator to property
+], Product.prototype, "title", void 0);
 /*
   output:
 
@@ -59,19 +87,15 @@ console.log(pers); // 5. Person { "name": "Saddam" }
   }
   Creating person object...
   Person {name: 'Saddam'}
+  Property decorator!
+  {constructor: ƒ, getPriceWithTax: ƒ}
+  title
 */
 /*
   Notes:
-  - We can add more than one decorator to a class, or anywhere else where you can use a decorator.
-  - They execute bottom up. The bottom-most decorator first, then thereafter, the decorators above it.
-    Such as example on above, WithTemplate runs first, then Logger executes.
-  - And important, about the actual decorator functions, the decorator factories run earlier. You will see
-    that there, actually the LOGGER FACTORY runs first, and then we got the TEMPLATE FACTORY. And that makes sense
-    because in the end, even though we got this @ symbol here, here we're executing a function, And of course,
-    regular JavaScript rules apply here and this function execution (@Logger('LOGGING')) happens before this
-    function (@WithTemplate('<h1>My Person Object</h1>', 'app')) execution. Which is why we see the Logger Factory
-    before we see Template Factory.
-  - So the creation of our actual decorator functions happens in the order in which we specify these factory functions.
-    But the execution of the actual decorator functions then happens bottom up. Which means the bottom-most decorator
-    executes first, so this decorator function, and thereafter the decorator above that executes.
+  - We can add a decorator to a property. If we add a decorator to a property, the decorator receives two arguments.
+  - The first argument, is the target of the property and for an instance property, which we call on a instance if we
+    work with it. If we had a static property, target would refer to the constructor function state.
+  - The second argument we get, is the property name simply.
+  - About Symbol: https://www.udemy.com/course/understanding-typescript/learn/lecture/16935722#questions/18123174
 */
