@@ -50,6 +50,33 @@ function Log(target: any, propertyName: string | Symbol) {
   console.log(propertyName); // title. property name we're working with.
 }
 
+function Log2(target: any, name: string, descriptor: PropertyDescriptor) {
+  // target: any -> if we're dealing with an instance accessor, or if we're dealing with a static one, it will be the constructor function so we don't know we will be of type any.
+
+  console.log('Accessor decorator!');
+  console.log(target);
+  console.log(name); // name of our accessor (set price(val: number)), price in this case. Not _price
+  console.log(descriptor); // descriptor of accessor (setter function defined)
+}
+
+function Log3(
+  target: any,
+  name: string | Symbol,
+  descriptor: PropertyDescriptor
+) {
+  console.log('Method decorator!');
+  console.log(target);
+  console.log(name); // name of our accessor (set price(val: number)), price in this case. Not _price
+  console.log(descriptor); // descriptor of method
+}
+
+function Log4(target: any, name: string | Symbol, postion: number) {
+  console.log('Parameter decorator!'); // we see our parameter decorator position over the method position, because execution order is different
+  console.log(target);
+  console.log(name); // name of our accessor (set price(val: number)), price in this case. Not _price
+  console.log(postion); // 0. the index of that argument, and that starts at zero, so the first argument has a number of zero here, an index of zero
+}
+
 class Product {
   @Log // add Log decorator to property
   title: string;
@@ -60,6 +87,7 @@ class Product {
     this._price = p;
   }
 
+  @Log2 // add Log2 to accessor (set price())
   set price(val: number) {
     if (val > 0) {
       this._price = val;
@@ -68,7 +96,9 @@ class Product {
     }
   }
 
-  getPriceWithTax(tax: number) {
+  @Log3 // add Log3 to method (getPriceWithTax(tax: number))
+  getPriceWithTax(@Log4 tax: number, ta2: number) {
+    // add Log4 to parameter (tax: number)
     return this.price * (1 + tax);
   }
 }
@@ -93,9 +123,21 @@ class Product {
   Property decorator!
   {constructor: ƒ, getPriceWithTax: ƒ}
   title
+  Accessor decorator!
+  {constructor: ƒ, getPriceWithTax: ƒ}
+  price
+  {get: undefined, enumerable: false, configurable: true, set: ƒ}
+  Parameter decorator!
+  {constructor: ƒ, getPriceWithTax: ƒ}
+  getPriceWithTax
+  0
+  Method decorator!
+  {constructor: ƒ, getPriceWithTax: ƒ}
+  getPriceWithTax
+  {writable: true, enumerable: false, configurable: true, value: ƒ}
 */
 
 /*
   Notes: 
-  - 
+  - We can also add decorators to accessors, method and parameter
 */
