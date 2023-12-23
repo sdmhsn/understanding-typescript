@@ -22,14 +22,25 @@ function Logger(logString) {
 function WithTemplate(template, hookId) {
     console.log('TEMPLATE FACTORY'); // B. the decorator factories here run earlier. runs second
     // decorator function
-    return function (constractor) {
-        console.log('Rendering decorator function template...');
-        const hookEl = document.getElementById(hookId);
-        const p = new constractor(); // 1. Creating person object... (refer to Person constructor())
-        if (hookEl) {
-            hookEl.innerHTML = template;
-            hookEl.querySelector('h1').textContent = p.name;
-        }
+    return function (
+    // { name: string } -> name property in Person class
+    originalConstructor) {
+        // console.log(originalConstructor); // class Person {...}
+        // So here we can return a new function, a new constructor function, or simply return a new class, in the end
+        return class extends originalConstructor {
+            // because a class, the class keyword, allows us to use this syntactic sugar to create such a constructor function, and the class we create here doesn't need to have a name
+            // so we are returning a constructor function, in the end, which is based on the original constructor function, so that we keep all the properties of our original class (Person), of our original constructor function,
+            constructor(..._) {
+                // we can change ...args in constructor() to an ..._ to tell typescript that we know we don't use it and that we wanna ignore this. This is a valid parameter name, it's just a special name which typescript takes as a we get it, we need to accept it, but we won't use it parameter.
+                super();
+                console.log('Rendering decorator function template...');
+                const hookEl = document.getElementById(hookId);
+                if (hookEl) {
+                    hookEl.innerHTML = template;
+                    hookEl.querySelector('h1').textContent = this.name;
+                }
+            }
+        };
     };
 }
 // WithTemplate runs first, then Logger executes
@@ -43,8 +54,8 @@ Person = __decorate([
     Logger('LOGGING'),
     WithTemplate('<h1>My Person Object</h1>', 'app')
 ], Person);
-const pers = new Person(); // 4. Creating person object... (refer to Person constructor())
-console.log(pers); // 5. Person { "name": "Saddam" }
+// const pers = new Person(); // 4. Creating person object... (refer to Person constructor())
+// console.log(pers); // 5. Person { "name": "Saddam" }
 /* Property Decorator */
 function Log(target, propertyName) {
     // target: any -> we use any because we don't know exactly which structure does object will have.
@@ -102,39 +113,12 @@ __decorate([
     __param(0, Log4)
 ], Product.prototype, "getPriceWithTax", null);
 /*
-  output:
-
-  LOGGER FACTORY
-  TEMPLATE FACTORY
-  Rendering decorator function template...
-  Creating person object...
-  Rendering decorator function logger...
-  LOGGING
-  class Person {
-    constructor() {
-        this.name = 'Saddam';
-        console.log('Creating person object...');
-    }
-  }
-  Creating person object...
-  Person {name: 'Saddam'}
-  Property decorator!
-  {constructor: ƒ, getPriceWithTax: ƒ}
-  title
-  Accessor decorator!
-  {constructor: ƒ, getPriceWithTax: ƒ}
-  price
-  {get: undefined, enumerable: false, configurable: true, set: ƒ}
-  Parameter decorator!
-  {constructor: ƒ, getPriceWithTax: ƒ}
-  getPriceWithTax
-  0
-  Method decorator!
-  {constructor: ƒ, getPriceWithTax: ƒ}
-  getPriceWithTax
-  {writable: true, enumerable: false, configurable: true, value: ƒ}
-*/
-/*
   Notes:
-  -
+  - Return value inside of the decorator function.
+  - In WithTemplate decorator function, we could add such a return value. And what we can return and what TypeScript is
+    able to use, depends on which kind of decorator you're working with. Inside a decorator function, we can return a
+    new constructor function, which will replace the old one. So which will replace the class to which you added to
+    decorator you could say.
+  - But, behind the scenes, we replace the class with our new custom class (e.g. return class extends originalConstructor {),
+    and that allows us to add extra logic, that should run when the class is instantiated.
 */
