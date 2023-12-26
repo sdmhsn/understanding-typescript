@@ -112,26 +112,41 @@ __decorate([
     ,
     __param(0, Log4)
 ], Product.prototype, "getPriceWithTax", null);
+function AutoBind(target, methodName, descriptor) {
+    console.log('Autobind decorator!');
+    console.log(descriptor);
+    const originalMethod = descriptor.value;
+    const adjDescriptor = {
+        configurable: true,
+        enumerable: false,
+        get() {
+            // get() default javascript method: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/get
+            // the getter (get()) basically is like having a value property with extra logic that runs before the value is returned.
+            const boundFn = originalMethod.bind(this); // if we would remove the binding here in our getter and the decorator and we save that, we will see that if it is now reloads and we click Click me, we see undefined again.
+            return boundFn;
+        },
+    };
+    return adjDescriptor;
+}
 class Print {
     constructor() {
         this.message = 'Hello world';
     }
-    // binding using arrow function (my experiment):
-    // showMessage = () => {
-    //   console.log(this.message);
-    // };
     showMessage() {
         console.log(this.message);
     }
 }
+__decorate([
+    AutoBind
+], Print.prototype, "showMessage", null);
 const p = new Print();
 // p.showMessage();
 const button = document.querySelector('button');
-// button.addEventListener('click', p.showMessage);
-// button.addEventListener('click', p.showMessage); // undefined
-button.addEventListener('click', p.showMessage.bind(p)); // 'Hello world'
+button.addEventListener('click', p.showMessage); // 'Hello world'
 /*
   Notes:
   - We can return something on Method Decorators, and that something should be a descriptor, which allows us
     to change the method or change the configuration of the method.
+  - So this is one neat example of how we can utilize decorators to build a quite amazing functionality and
+    save you the hassle of manually calling bind everywhere.
 */
