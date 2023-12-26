@@ -52,8 +52,8 @@ class Person {
   }
 }
 
-// const pers = new Person(); // 4. Creating person object... (refer to Person constructor())
-// console.log(pers); // 5. Person { "name": "Saddam" }
+const pers = new Person(); // 4. Creating person object... (refer to Person constructor())
+console.log(pers); // 5. Person { "name": "Saddam" }
 
 /* Property Decorator */
 function Log(target: any, propertyName: string | Symbol) {
@@ -117,13 +117,29 @@ class Product {
   }
 }
 
+class Print {
+  message = 'Hello world';
+
+  // binding using arrow function (my experiment):
+  // showMessage = () => {
+  //   console.log(this.message);
+  // };
+
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Print();
+// p.showMessage();
+
+const button = document.querySelector('button')!;
+// button.addEventListener('click', p.showMessage);
+// button.addEventListener('click', p.showMessage); // undefined
+button.addEventListener('click', p.showMessage.bind(p)); // 'Hello world'
+
 /*
   Notes: 
-  - Return value inside of the decorator function. 
-  - In WithTemplate decorator function, we could add such a return value. And what we can return and what TypeScript is 
-    able to use, depends on which kind of decorator you're working with. Inside a decorator function, we can return a 
-    new constructor function, which will replace the old one. So which will replace the class to which you added to 
-    decorator you could say.
-  - But, behind the scenes, we replace the class with our new custom class (e.g. return class extends originalConstructor {), 
-    and that allows us to add extra logic, that should run when the class is instantiated.
+  - We can return something on Method Decorators, and that something should be a descriptor, which allows us 
+    to change the method or change the configuration of the method.
 */
